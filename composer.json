@@ -1,0 +1,19 @@
+{
+    "name": "blacknine96/import-csv",
+    "type": "library",
+    "description": "Read and import data from csv file",
+    "keywords": [
+        "csv",
+        "import"
+    ],
+    "homepage": "https://blacknine96.com",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ly Quoc Bao",
+            "email": "baolq1996@gmail.com",
+            "homepage": "https://blacknine96.com",
+            "role": "Developer"
+        }
+    ]
+}
