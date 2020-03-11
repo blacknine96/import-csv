@@ -17,13 +17,8 @@ $test->openSingleRow();
 
 while ($test->checkIsNotEof()) {
 	$singleRow = $test->getSingleRow();
-
 	print_r($singleRow);
 }
-$test->closeSingleRow();
-
-
-
 
 
 $test2 = Iacsv::start($pathFile)

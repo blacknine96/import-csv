@@ -201,12 +201,6 @@ class Iacsv
 
 	}
 
-
-	public function closeSingleRow(){
-		$this->__closeFile();
-	}
-
-
 	public function getSingleRow(){
 		return $this->__getRow();
 	}
@@ -259,11 +253,23 @@ class Iacsv
 
 
 	public function checkIsEof(){
-		return feof($this->fileContent);
+		if(feof($this->fileContent)){
+			$this->__closeFile();
+			return true;
+		}
+		else{
+			return false;
+		}
 	}
 
 	public function checkIsNotEof(){
-		return !feof($this->fileContent);
+		if(!feof($this->fileContent)){
+			return true;
+		}
+		else{
+			$this->__closeFile();
+			return false;
+		}
 	}
 
 
