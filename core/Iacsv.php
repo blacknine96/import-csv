@@ -192,7 +192,10 @@ class Iacsv
 		if (is_null($this->getRowStart())) {
 			$this->setRowStart(0);
 		}
+
 		$this->__openFile();
+
+		$this->__handleStartRow();
 
 		return $this;
 
@@ -222,7 +225,6 @@ class Iacsv
 		if (count($contents) == 1) {
 			$contents = explode(',', $contents[0]);
 		}
-		// always return array of row content
 		return $contents;
 	}
 
@@ -232,24 +234,27 @@ class Iacsv
 
 		$return = [];
 
-		$row = 1;
-
 		$this->__openFile();
 
+		$this->__handleStartRow();
+
 		while (!$this->checkIsEof()) {
-
-			$contents = $this->__getRow();
-
-			if($this->getRowStart() < $row){
-				$return[] = $contents;
-			}
-			$row++;
-
+			$return[] = $this->__getRow();
 		}
 
 		$this->__closeFile();
 
 		return $return;
+	}
+
+	private function __handleStartRow(){
+
+		if($this->getRowStart() > 0){
+			for($row = 1; $row <= $this->getRowStart(); $row++){
+				fgets($this->fileContent);
+			}
+		}
+
 	}
 
 
