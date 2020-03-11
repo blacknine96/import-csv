@@ -236,8 +236,6 @@ class Iacsv
 			$return[] = $this->__getRow();
 		}
 
-		$this->__closeFile();
-
 		return $return;
 	}
 
