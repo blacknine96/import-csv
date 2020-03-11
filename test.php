@@ -2,7 +2,7 @@
 
 require_once __DIR__ . '\core\Iacsv.php';
 
-use core\blacknine\Iacsv;
+use blacknine96\importcsv\core;
 
 
 $pathFile = 'product_2020-02-25_083538.csv';
