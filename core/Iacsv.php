@@ -7,7 +7,7 @@ class Iacsv
 
 	private $pathFile;
 
-	private $formatFileIsUTF8;
+	private $isUTF8;
 
 	private $delimiter;
 
@@ -119,21 +119,21 @@ class Iacsv
 	public function detectFormatFileIsUTF8()
 	{
 
-		$this->formatFileIsUTF8 = mb_check_encoding(file_get_contents($this->pathFile), 'UTF-8');
+		$this->isUTF8 = mb_check_encoding(file_get_contents($this->pathFile), 'UTF-8');
 
 	}
 
-	public function setFormatFileIsUTF8($formatFileIsUTF8)
+	public function setIsUTF8($isUTF8)
 	{
 
-		$this->formatFileIsUTF8 = $formatFileIsUTF8;
+		$this->isUTF8 = $isUTF8;
 		return $this;
 
 	}
 
 	public function getFormatFileIsUTF8()
 	{
-		return $this->formatFileIsUTF8;
+		return $this->isUTF8;
 	}
 
 	/**
@@ -150,8 +150,6 @@ class Iacsv
 		fclose($this->fileContent);
 	}
 
-
-
 	/**
 	 * Get data from file.
 	 *
@@ -163,7 +161,7 @@ class Iacsv
 	}
 
 
-	public function execute(){
+	public function all(){
 
 		if (is_null($this->getDelimiter())) {
 			$this->detectDelimiter();
@@ -179,6 +177,35 @@ class Iacsv
 
 		return $this->__toArray();
 
+	}
+
+	public function openSingleRow(){
+
+		if (is_null($this->getDelimiter())) {
+			$this->detectDelimiter();
+		}
+
+		if (is_null($this->getFormatFileIsUTF8())) {
+			$this->detectFormatFileIsUTF8();
+		}
+
+		if (is_null($this->getRowStart())) {
+			$this->setRowStart(0);
+		}
+		$this->__openFile();
+
+		return $this;
+
+	}
+
+
+	public function closeSingleRow(){
+		$this->__closeFile();
+	}
+
+
+	public function getSingleRow(){
+		return $this->__getRow();
 	}
 
 
@@ -209,15 +236,13 @@ class Iacsv
 
 		$this->__openFile();
 
-		while (!feof($this->fileContent)) {
+		while (!$this->checkIsEof()) {
 
 			$contents = $this->__getRow();
 
 			if($this->getRowStart() < $row){
 				$return[] = $contents;
 			}
-
-
 			$row++;
 
 		}
@@ -225,6 +250,15 @@ class Iacsv
 		$this->__closeFile();
 
 		return $return;
+	}
+
+
+	public function checkIsEof(){
+		return feof($this->fileContent);
+	}
+
+	public function checkIsNotEof(){
+		return !feof($this->fileContent);
 	}
 
 
