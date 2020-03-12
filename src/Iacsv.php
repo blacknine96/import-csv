@@ -118,17 +118,13 @@ class Iacsv
 	 */
 	public function detectFormatFileIsUTF8()
 	{
-
 		$this->isUTF8 = mb_check_encoding(file_get_contents($this->pathFile), 'UTF-8');
-
 	}
 
 	public function setIsUTF8($isUTF8)
 	{
-
 		$this->isUTF8 = $isUTF8;
 		return $this;
-
 	}
 
 	public function getFormatFileIsUTF8()
@@ -160,62 +156,46 @@ class Iacsv
 		return new self($pathFile);
 	}
 
-
-	public function all(){
-
+	private function __beforeGetFile()
+	{
 		if (is_null($this->getDelimiter())) {
 			$this->detectDelimiter();
 		}
-
 		if (is_null($this->getFormatFileIsUTF8())) {
 			$this->detectFormatFileIsUTF8();
 		}
-
 		if (is_null($this->getRowStart())) {
 			$this->setRowStart(0);
 		}
+	}
 
+	public function all()
+	{
+		$this->__beforeGetFile();
 		return $this->__toArray();
-
 	}
 
-	public function openSingleRow(){
-
-		if (is_null($this->getDelimiter())) {
-			$this->detectDelimiter();
-		}
-
-		if (is_null($this->getFormatFileIsUTF8())) {
-			$this->detectFormatFileIsUTF8();
-		}
-
-		if (is_null($this->getRowStart())) {
-			$this->setRowStart(0);
-		}
-
+	public function openSingleRow()
+	{
+		$this->__beforeGetFile();
 		$this->__openFile();
-
 		$this->__handleStartRow();
-
 		return $this;
-
 	}
 
-	public function getSingleRow(){
+	public function getSingleRow()
+	{
 		return $this->__getRow();
 	}
 
-
 	private function __getRow()
 	{
-
 		if (!$this->getFormatFileIsUTF8()) {
 			$contents = str_getcsv(iconv('Windows-1252', 'UTF-8', fgets($this->fileContent)), $this->delimiter);
 		}
 		else {
 			$contents = str_getcsv(fgets($this->fileContent), $this->delimiter);
 		}
-
 		if (count($contents) == 1) {
 			$contents = explode(',', $contents[0]);
 		}
@@ -225,51 +205,46 @@ class Iacsv
 
 	private function __toArray()
 	{
-
 		$return = [];
-
 		$this->__openFile();
-
 		$this->__handleStartRow();
-
 		while (!$this->checkIsEof()) {
 			$return[] = $this->__getRow();
 		}
-
 		return $return;
 	}
 
-	private function __handleStartRow(){
-
-		if($this->getRowStart() > 0){
-			for($row = 1; $row <= $this->getRowStart(); $row++){
+	private function __handleStartRow()
+	{
+		if ($this->getRowStart() > 0) {
+			for ($row = 1; $row <= $this->getRowStart(); $row++) {
 				fgets($this->fileContent);
 			}
 		}
-
 	}
 
 
-	public function checkIsEof(){
-		if(feof($this->fileContent)){
+	public function checkIsEof()
+	{
+		if (feof($this->fileContent)) {
 			$this->__closeFile();
 			return true;
 		}
-		else{
+		else {
 			return false;
 		}
 	}
 
-	public function checkIsNotEof(){
-		if(!feof($this->fileContent)){
+	public function checkIsNotEof()
+	{
+		if (!feof($this->fileContent)) {
 			return true;
 		}
-		else{
+		else {
 			$this->__closeFile();
 			return false;
 		}
 	}
-
 
 
 }
