@@ -230,9 +230,7 @@ class Iacsv
 			$this->__closeFile();
 			return true;
 		}
-		else {
-			return false;
-		}
+		return false;
 	}
 
 	public function checkIsNotEof()
@@ -240,10 +238,9 @@ class Iacsv
 		if (!feof($this->fileContent)) {
 			return true;
 		}
-		else {
-			$this->__closeFile();
-			return false;
-		}
+
+		$this->__closeFile();
+		return false;
 	}
 
 
