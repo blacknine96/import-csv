@@ -15,5 +15,8 @@
             "homepage": "https://blacknine96.com",
             "role": "Developer"
         }
-    ]
+    ],
+    "autoload": {
+        "psr-4": {"blacknine96\\importcsv\\core\\": "src/"}
+    }
 }
