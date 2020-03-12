@@ -1,6 +1,6 @@
 <?php
 
-namespace blacknine96\importcsv\core;
+namespace blacknine96\importcsv;
 
 class Iacsv
 {

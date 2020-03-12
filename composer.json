@@ -17,6 +17,8 @@
         }
     ],
     "autoload": {
-        "psr-4": {"blacknine96\\importcsv\\core\\": "core/"}
+        "psr-4": {
+            "blacknine96\\importcsv\\": "src"
+        }
     }
 }
